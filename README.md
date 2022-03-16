@@ -6,6 +6,7 @@ This is a Universitry project done for the subject "_Programming in C#_". It's a
 ---
   - [General info](#general-info)
   - [Features](#features)
+  - [Database Model](#database-model)
   - [Technologies & languages](#technologies--languages)
   - [Authors](#authors)
 
@@ -37,6 +38,9 @@ This is a Universitry project done for the subject "_Programming in C#_". It's a
 * Microsoft Azure Autotagging
   * When a user uploads an image, they can choose to either manually tag it or to auto tag it using Azure Analyze Image API
 
+## Database Model
+---
+![](Database_Model.png)
 
 ## Technologies & languages
 
@@ -50,9 +54,9 @@ This is a Universitry project done for the subject "_Programming in C#_". It's a
 * .NetCore
 * Blazor
 
----
-
 ## Authors
+
+---
 
 | Name            | Github                                        |
 | --------------- | --------------------------------------------- |
