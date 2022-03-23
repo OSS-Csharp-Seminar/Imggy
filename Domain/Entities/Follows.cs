@@ -8,10 +8,10 @@ namespace Domain.Entities
 {
     public class Follows
     {
-        public int Id { get; set; }
-        public int? FollowedId { get; set; }
-        public User Followed { get; set; }
-        public int? FollowingId { get; set; }
-        public User Following { get; set; }
+        public int id { get; set; }
+        public int followedId { get; set; }
+        public User followed { get; set; }
+        public int followingId { get; set; }
+        public User following { get; set; }
     }
 }

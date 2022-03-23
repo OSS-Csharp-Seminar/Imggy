@@ -8,15 +8,15 @@ namespace Domain.Entities
 {
     public class Post
     {
-        public int Id { get; set; }
-        public int? UserId { get; set; }
-        public User User { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public byte[] Picture { get; set; }
-        public DateTime DateOfCreation { get; set; }
-        public List<Album_Post> Album_Post { get; set; }
-        public List<PostLikes> PostLikes { get; set; }
-        public List<Post_Tag> Post_Tag { get; set; }
+        public int id { get; set; }
+        public int userId { get; set; }
+        public User user { get; set; }
+        public string title { get; set; }
+        public string description { get; set; }
+        public byte[] picture { get; set; }
+        public DateTime dateOfCreation { get; set; }
+        public List<AlbumPost> albumPost { get; set; }
+        public List<PostLikes> postLikes { get; set; }
+        public List<PostTag> postTag { get; set; }
     }
 }

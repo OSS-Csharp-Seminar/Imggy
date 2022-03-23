@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Blocked
+    public class AlbumPost
     {
         public int id { get; set; }
-        public int blockerId { get; set; }
-        public User blocker { get; set; }
-        public int blockingId { get; set; }
-        public User blocking { get; set; }
+        public int albumId { get; set; }
+        public Album album { get; set; }
+        public int postId { get; set; }
+        public Post post { get; set; }
     }
 }

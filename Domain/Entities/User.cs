@@ -9,8 +9,8 @@ namespace Domain.Entities
 {
     public class User : IdentityUser
     {
-        public DateTime DateOfCreation { get; set; }
-        public List<PostLikes> PostLikes { get; set; }
-        public List<CommentLikes> CommentLikes { get; set; }
+        public DateTime dateOfCreation { get; set; }
+        public List<PostLikes> postLikes { get; set; }
+        public List<CommentLikes> commentLikes { get; set; }
     }
 }

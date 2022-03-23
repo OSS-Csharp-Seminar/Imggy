@@ -8,14 +8,14 @@ namespace Domain.Entities
 {
     public class Comment
     {
-        public int Id { get; set; }
-        public int? ParentId { get; set; }
+        public int id { get; set; }
+        public int? parentId { get; set; }
         public Comment Parent { get; set; }
-        public int? UserId { get; set; }
-        public User User { get; set; }
-        public int? PostId { get; set; }
-        public Post Post { get; set; }
-        public DateTime DateOfCreation { get; set; }
-        public List<CommentLikes> CommentLikes { get; set; }
+        public int userId { get; set; }
+        public User user { get; set; }
+        public int postId { get; set; }
+        public Post post { get; set; }
+        public DateTime dateOfCreation { get; set; }
+        public List<CommentLikes> commentLikes { get; set; }
     }
 }

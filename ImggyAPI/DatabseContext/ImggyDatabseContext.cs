@@ -10,22 +10,22 @@ namespace ImggyAPI.DatabseContext
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Album_Post>()
+            modelBuilder.Entity<AlbumPost>()
                 .HasOne(a => a.Album)
                 .WithMany(ap => ap.Album_Post)
                 .HasForeignKey(p => p.PostId);
 
-            modelBuilder.Entity<Album_Post>()
+            modelBuilder.Entity<AlbumPost>()
                 .HasOne(p => p.Post)
                 .WithMany(ap => ap.Album_Post)
                 .HasForeignKey(a => a.AlbumId);
 
-            modelBuilder.Entity<Post_Tag>()
+            modelBuilder.Entity<PostTag>()
                 .HasOne(p => p.Post)
                 .WithMany(pt => pt.Post_Tag)
                 .HasForeignKey(t => t.TagId);
 
-            modelBuilder.Entity<Post_Tag>()
+            modelBuilder.Entity<PostTag>()
                 .HasOne(t => t.Tag)
                 .WithMany(pt => pt.Post_Tag)
                 .HasForeignKey(p => p.PostId);
@@ -60,7 +60,7 @@ namespace ImggyAPI.DatabseContext
         public DbSet<PostLikes> PostLikes { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<User> User { get; set; }
-        public DbSet<Album_Post> Albums_Posts { get; set; }
-        public DbSet<Post_Tag> Posts_Tags { get; set; }
+        public DbSet<AlbumPost> Albums_Posts { get; set; }
+        public DbSet<PostTag> Posts_Tags { get; set; }
     }
 }
