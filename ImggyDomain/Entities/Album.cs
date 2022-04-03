@@ -4,16 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities
+namespace ImggyDomain.Entities
 {
     public class Album
     {
+        public Album()
+        {
+            this.posts = new HashSet<Post>();
+        }
         public int id { get; set; }
         public int userId { get; set; }
         public User user { get; set; }
         public string name { get; set; }
         public bool isPublic { get; set; }
         public DateTime dateOfCreation { get; set; }
-        public List<AlbumPost> albumPost { get; set; }
+        public virtual ICollection<Post> posts { get; set; }
     }
 }
