@@ -1,32 +1,36 @@
 {
   "format": 1,
   "restore": {
-    "D:\\C#Seminar\\Imggy\\Imggy\\ImggyAPI\\ImggyAPI.csproj": {}
+    "C:\\Users\\Ilario\\source\\repos\\Imggy\\ImggyAPI\\ImggyAPI.csproj": {}
   },
   "projects": {
-    "D:\\C#Seminar\\Imggy\\Imggy\\Domain\\Domain.csproj": {
+    "C:\\Users\\Ilario\\source\\repos\\Imggy\\DomainModel\\DomainModel.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\C#Seminar\\Imggy\\Imggy\\Domain\\Domain.csproj",
-        "projectName": "Domain",
-        "projectPath": "D:\\C#Seminar\\Imggy\\Imggy\\Domain\\Domain.csproj",
-        "packagesPath": "C:\\Users\\hrvoj\\.nuget\\packages\\",
-        "outputPath": "D:\\C#Seminar\\Imggy\\Imggy\\Domain\\obj\\",
+        "projectUniqueName": "C:\\Users\\Ilario\\source\\repos\\Imggy\\DomainModel\\DomainModel.csproj",
+        "projectName": "DomainModel",
+        "projectPath": "C:\\Users\\Ilario\\source\\repos\\Imggy\\DomainModel\\DomainModel.csproj",
+        "packagesPath": "C:\\Users\\Ilario\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Ilario\\source\\repos\\Imggy\\DomainModel\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\hrvoj\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Ilario\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net6.0"
+          "net5.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net6.0": {
-            "targetAlias": "net6.0",
+          "net5.0": {
+            "targetAlias": "net5.0",
             "projectReferences": {}
           }
         },
@@ -37,12 +41,12 @@
         }
       },
       "frameworks": {
-        "net6.0": {
-          "targetAlias": "net6.0",
+        "net5.0": {
+          "targetAlias": "net5.0",
           "dependencies": {
-            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+            "Microsoft.AspNet.Identity.EntityFramework": {
               "target": "Package",
-              "version": "[6.0.3, )"
+              "version": "[2.2.3, )"
             }
           },
           "imports": [
@@ -64,32 +68,36 @@
         }
       }
     },
-    "D:\\C#Seminar\\Imggy\\Imggy\\ImggyAPI\\ImggyAPI.csproj": {
+    "C:\\Users\\Ilario\\source\\repos\\Imggy\\ImggyAPI\\ImggyAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\C#Seminar\\Imggy\\Imggy\\ImggyAPI\\ImggyAPI.csproj",
+        "projectUniqueName": "C:\\Users\\Ilario\\source\\repos\\Imggy\\ImggyAPI\\ImggyAPI.csproj",
         "projectName": "ImggyAPI",
-        "projectPath": "D:\\C#Seminar\\Imggy\\Imggy\\ImggyAPI\\ImggyAPI.csproj",
-        "packagesPath": "C:\\Users\\hrvoj\\.nuget\\packages\\",
-        "outputPath": "D:\\C#Seminar\\Imggy\\Imggy\\ImggyAPI\\obj\\",
+        "projectPath": "C:\\Users\\Ilario\\source\\repos\\Imggy\\ImggyAPI\\ImggyAPI.csproj",
+        "packagesPath": "C:\\Users\\Ilario\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Ilario\\source\\repos\\Imggy\\ImggyAPI\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\hrvoj\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Ilario\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net6.0"
+          "net5.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net6.0": {
-            "targetAlias": "net6.0",
+          "net5.0": {
+            "targetAlias": "net5.0",
             "projectReferences": {
-              "D:\\C#Seminar\\Imggy\\Imggy\\Domain\\Domain.csproj": {
-                "projectPath": "D:\\C#Seminar\\Imggy\\Imggy\\Domain\\Domain.csproj"
+              "C:\\Users\\Ilario\\source\\repos\\Imggy\\DomainModel\\DomainModel.csproj": {
+                "projectPath": "C:\\Users\\Ilario\\source\\repos\\Imggy\\DomainModel\\DomainModel.csproj"
               }
             }
           }
@@ -101,26 +109,22 @@
         }
       },
       "frameworks": {
-        "net6.0": {
-          "targetAlias": "net6.0",
+        "net5.0": {
+          "targetAlias": "net5.0",
           "dependencies": {
-            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[6.0.3, )"
-            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[6.0.3, )"
+              "version": "[5.0.15, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[6.0.3, )"
+              "version": "[5.0.15, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[6.0.3, )"
+              "version": "[5.0.15, )"
             }
           },
           "imports": [
