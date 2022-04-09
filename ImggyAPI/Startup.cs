@@ -52,5 +52,9 @@ namespace ImggyAPI
                 endpoints.MapRazorPages();
             });
         }
+
+        
+
+
     }
 }
