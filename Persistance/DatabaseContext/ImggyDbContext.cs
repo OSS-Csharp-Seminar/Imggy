@@ -1,6 +1,4 @@
 ﻿using Domain.Entities;
-using Domena.Entities;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,12 +9,13 @@ using System.Threading.Tasks;
 
 namespace Persistence.DatabaseContext
 {
-    public class ImggyDbContext : IdentityDbContext<User>
+    public class ImggyDbContext : Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityDbContext<User>
     {
         public ImggyDbContext(DbContextOptions<ImggyDbContext> options) : base(options)
         {
 
         }
+
         public override int SaveChanges()
         {
             var entities = ChangeTracker.Entries().Where(x => x.Entity is BaseEntity && (x.State == EntityState.Added || x.State == EntityState.Modified));
@@ -41,8 +40,9 @@ namespace Persistence.DatabaseContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(IdentityDbContext).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ImggyDbContext).Assembly);
             base.OnModelCreating(modelBuilder);
         }
+
     }
 }
