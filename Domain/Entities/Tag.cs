@@ -8,12 +8,8 @@ namespace Domain.Entities
 {
     public class Tag
     {
-        public Tag()
-        {
-            this.posts = new HashSet<Post>();
-        }
-        public int id { get; set; }
-        public string name { get; set; }
-        public virtual ICollection<Post> posts { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public ICollection<Post> Posts { get; set; }
     }
 }

@@ -8,10 +8,10 @@ namespace Domain.Entities
 {
     public class Blocked
     {
-        public int id { get; set; }
-        public int blockerId { get; set; }
-        public User blocker { get; set; }
-        public int blockingId { get; set; }
-        public User blocking { get; set; }
+        public int Id { get; set; }
+        public int BlockerId { get; set; }
+        public User Blocker { get; set; }
+        public int BlockingId { get; set; }
+        public User Blocking { get; set; }
     }
 }

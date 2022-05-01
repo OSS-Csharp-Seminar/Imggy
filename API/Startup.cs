@@ -39,7 +39,7 @@ namespace API
 
             services.AddDbContext<ImggyDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("IdentityDatabase"));
+                options.UseSqlServer(Configuration.GetConnectionString("ImggyDatabase"));
             });
 
             services.AddIdentity<User, IdentityRole>()

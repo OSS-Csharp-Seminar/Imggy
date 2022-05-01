@@ -41,6 +41,18 @@ namespace Persistence.DatabaseContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ImggyDbContext).Assembly);
+            modelBuilder
+                .Entity<Album>()
+                .HasMany(a => a.Posts);
+            modelBuilder
+                .Entity<Post>()
+                .HasMany(p => p.Albums);
+            modelBuilder
+                .Entity<Tag>()
+                .HasMany(t => t.Posts);
+            modelBuilder
+                .Entity<Post>()
+                .HasMany(p => p.Tags);
             base.OnModelCreating(modelBuilder);
         }
 

@@ -11,8 +11,8 @@ namespace Domain.Entities
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public DateTime dateOfCreation { get; set; }
-        public List<PostLikes> postLikes { get; set; }
-        public List<CommentLikes> commentLikes { get; set; }
+        public DateTime DateOfCreation { get; set; }
+        public List<PostLikes> PostLikes { get; set; }
+        public List<CommentLikes> CommentLikes { get; set; }
     }
 }

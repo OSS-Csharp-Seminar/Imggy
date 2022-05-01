@@ -8,10 +8,10 @@ namespace Domain.Entities
 {
     public class PostLikes
     {
-        public int id { get; set; }
-        public int postId { get; set; }
-        public Post post{ get; set; }
-        public int userId { get; set; }
-        public User user { get; set; }
+        public int Id { get; set; }
+        public int PostId { get; set; }
+        public Post Post{ get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; }
     }
 }
