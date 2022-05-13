@@ -8,12 +8,12 @@ namespace Domain.Entities
 {
     public class Album
     {
-        public int Id { get; set; }
+        public int AlbumId { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
         public string Name { get; set; }
         public bool IsPublic { get; set; }
         public DateTime DateOfCreation { get; set; }
-        public ICollection<Post> Posts { get; set; }
+        public ICollection<AlbumPosts> AlbumPosts { get; set; }
     }
 }

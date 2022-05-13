@@ -50,6 +50,19 @@ namespace Persistance.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Tag",
+                columns: table => new
+                {
+                    TagId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tag", x => x.TagId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -68,6 +81,29 @@ namespace Persistance.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Album",
+                columns: table => new
+                {
+                    AlbumId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(nullable: false),
+                    UserId1 = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    IsPublic = table.Column<bool>(nullable: false),
+                    DateOfCreation = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Album", x => x.AlbumId);
+                    table.ForeignKey(
+                        name: "FK_Album_AspNetUsers_UserId1",
+                        column: x => x.UserId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -159,20 +195,18 @@ namespace Persistance.Migrations
                 name: "Post",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    PostId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(nullable: false),
                     UserId1 = table.Column<string>(nullable: true),
                     Title = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     Picture = table.Column<byte[]>(nullable: true),
-                    DateOfCreation = table.Column<DateTime>(nullable: false),
-                    AlbumId = table.Column<int>(nullable: true),
-                    TagId = table.Column<int>(nullable: true)
+                    DateOfCreation = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Post", x => x.Id);
+                    table.PrimaryKey("PK_Post", x => x.PostId);
                     table.ForeignKey(
                         name: "FK_Post_AspNetUsers_UserId1",
                         column: x => x.UserId1,
@@ -182,33 +216,27 @@ namespace Persistance.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Album",
+                name: "AlbumPosts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(nullable: false),
-                    UserId1 = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
-                    IsPublic = table.Column<bool>(nullable: false),
-                    DateOfCreation = table.Column<DateTime>(nullable: false),
-                    PostId = table.Column<int>(nullable: true)
+                    AlbumId = table.Column<int>(nullable: false),
+                    PostId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Album", x => x.Id);
+                    table.PrimaryKey("PK_AlbumPosts", x => new { x.AlbumId, x.PostId });
                     table.ForeignKey(
-                        name: "FK_Album_Post_PostId",
+                        name: "FK_AlbumPosts_Album_AlbumId",
+                        column: x => x.AlbumId,
+                        principalTable: "Album",
+                        principalColumn: "AlbumId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AlbumPosts_Post_PostId",
                         column: x => x.PostId,
                         principalTable: "Post",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Album_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "PostId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -236,7 +264,7 @@ namespace Persistance.Migrations
                         name: "FK_Comment_Post_PostId",
                         column: x => x.PostId,
                         principalTable: "Post",
-                        principalColumn: "Id",
+                        principalColumn: "PostId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Comment_AspNetUsers_UserId1",
@@ -263,7 +291,7 @@ namespace Persistance.Migrations
                         name: "FK_PostLikes_Post_PostId",
                         column: x => x.PostId,
                         principalTable: "Post",
-                        principalColumn: "Id",
+                        principalColumn: "PostId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PostLikes_AspNetUsers_UserId1",
@@ -274,23 +302,27 @@ namespace Persistance.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tag",
+                name: "PostTags",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
-                    PostId = table.Column<int>(nullable: true)
+                    PostId = table.Column<int>(nullable: false),
+                    TagId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tag", x => x.Id);
+                    table.PrimaryKey("PK_PostTags", x => new { x.PostId, x.TagId });
                     table.ForeignKey(
-                        name: "FK_Tag_Post_PostId",
+                        name: "FK_PostTags_Post_PostId",
                         column: x => x.PostId,
                         principalTable: "Post",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "PostId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PostTags_Tag_TagId",
+                        column: x => x.TagId,
+                        principalTable: "Tag",
+                        principalColumn: "TagId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -321,14 +353,14 @@ namespace Persistance.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Album_PostId",
-                table: "Album",
-                column: "PostId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Album_UserId1",
                 table: "Album",
                 column: "UserId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AlbumPosts_PostId",
+                table: "AlbumPosts",
+                column: "PostId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -395,16 +427,6 @@ namespace Persistance.Migrations
                 column: "UserId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Post_AlbumId",
-                table: "Post",
-                column: "AlbumId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Post_TagId",
-                table: "Post",
-                column: "TagId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Post_UserId1",
                 table: "Post",
                 column: "UserId1");
@@ -420,36 +442,15 @@ namespace Persistance.Migrations
                 column: "UserId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tag_PostId",
-                table: "Tag",
-                column: "PostId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Post_Album_AlbumId",
-                table: "Post",
-                column: "AlbumId",
-                principalTable: "Album",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Post_Tag_TagId",
-                table: "Post",
-                column: "TagId",
-                principalTable: "Tag",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                name: "IX_PostTags_TagId",
+                table: "PostTags",
+                column: "TagId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Album_Post_PostId",
-                table: "Album");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Tag_Post_PostId",
-                table: "Tag");
+            migrationBuilder.DropTable(
+                name: "AlbumPosts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -473,19 +474,22 @@ namespace Persistance.Migrations
                 name: "PostLikes");
 
             migrationBuilder.DropTable(
+                name: "PostTags");
+
+            migrationBuilder.DropTable(
+                name: "Album");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Comment");
 
             migrationBuilder.DropTable(
-                name: "Post");
-
-            migrationBuilder.DropTable(
-                name: "Album");
-
-            migrationBuilder.DropTable(
                 name: "Tag");
+
+            migrationBuilder.DropTable(
+                name: "Post");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

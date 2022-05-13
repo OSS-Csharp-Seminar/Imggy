@@ -8,8 +8,8 @@ namespace Domain.Entities
 {
     public class Tag
     {
-        public int Id { get; set; }
+        public int TagId { get; set; }
         public string Name { get; set; }
-        public ICollection<Post> Posts { get; set; }
+        public ICollection<PostTags> PostTags  { get; set; }
     }
 }
