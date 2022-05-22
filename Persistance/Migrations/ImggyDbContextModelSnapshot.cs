@@ -45,7 +45,7 @@ namespace Persistance.Migrations
 
                     b.HasIndex("UserId1");
 
-                    b.ToTable("Album");
+                    b.ToTable("Albums");
                 });
 
             modelBuilder.Entity("Domain.Entities.AlbumPosts", b =>
@@ -61,6 +61,34 @@ namespace Persistance.Migrations
                     b.HasIndex("PostId");
 
                     b.ToTable("AlbumPosts");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Blocked", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BlockerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BlockerId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("BlockingId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BlockingId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlockerId1");
+
+                    b.HasIndex("BlockingId1");
+
+                    b.ToTable("Blocked");
                 });
 
             modelBuilder.Entity("Domain.Entities.Comment", b =>
@@ -93,7 +121,7 @@ namespace Persistance.Migrations
 
                     b.HasIndex("UserId1");
 
-                    b.ToTable("Comment");
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("Domain.Entities.CommentLikes", b =>
@@ -119,6 +147,34 @@ namespace Persistance.Migrations
                     b.HasIndex("UserId1");
 
                     b.ToTable("CommentLikes");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Follows", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("FollowedId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FollowedId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("FollowingId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FollowingId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FollowedId1");
+
+                    b.HasIndex("FollowingId1");
+
+                    b.ToTable("Follows");
                 });
 
             modelBuilder.Entity("Domain.Entities.Post", b =>
@@ -150,7 +206,7 @@ namespace Persistance.Migrations
 
                     b.HasIndex("UserId1");
 
-                    b.ToTable("Post");
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("Domain.Entities.PostLikes", b =>
@@ -205,7 +261,7 @@ namespace Persistance.Migrations
 
                     b.HasKey("TagId");
 
-                    b.ToTable("Tag");
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -437,6 +493,17 @@ namespace Persistance.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Domain.Entities.Blocked", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "Blocker")
+                        .WithMany()
+                        .HasForeignKey("BlockerId1");
+
+                    b.HasOne("Domain.Entities.User", "Blocking")
+                        .WithMany()
+                        .HasForeignKey("BlockingId1");
+                });
+
             modelBuilder.Entity("Domain.Entities.Comment", b =>
                 {
                     b.HasOne("Domain.Entities.Comment", "Parent")
@@ -465,6 +532,17 @@ namespace Persistance.Migrations
                     b.HasOne("Domain.Entities.User", "User")
                         .WithMany("CommentLikes")
                         .HasForeignKey("UserId1");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Follows", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "Followed")
+                        .WithMany()
+                        .HasForeignKey("FollowedId1");
+
+                    b.HasOne("Domain.Entities.User", "Following")
+                        .WithMany()
+                        .HasForeignKey("FollowingId1");
                 });
 
             modelBuilder.Entity("Domain.Entities.Post", b =>

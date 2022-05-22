@@ -20,6 +20,16 @@ namespace Persistence.DatabaseContext
         {
             return await base.SaveChangesAsync(cancellationToken);
         }
+        DbSet<Album> Albums { get; set; }
+        DbSet<AlbumPosts> AlbumPosts { get; set; }
+        DbSet<Post> Posts { get; set; }
+        DbSet<Tag> Tags { get; set; }
+        DbSet<PostTags> PostTags { get; set; }
+        DbSet<PostLikes> PostLikes { get; set; }
+        DbSet<Comment> Comments { get; set; }
+        DbSet<CommentLikes> CommentLikes { get; set; }
+        DbSet<Blocked> Blocked { get; set; }
+        DbSet<Follows> Follows { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
