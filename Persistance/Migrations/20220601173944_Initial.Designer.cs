@@ -10,7 +10,7 @@ using Persistence.DatabaseContext;
 namespace Persistance.Migrations
 {
     [DbContext(typeof(ImggyDbContext))]
-    [Migration("20220522104756_Initial")]
+    [Migration("20220601173944_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
