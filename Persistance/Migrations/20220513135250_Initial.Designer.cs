@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.DatabaseContext;
 
 namespace Persistance.Migrations
 {
     [DbContext(typeof(ImggyDbContext))]
-    partial class ImggyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220513135250_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,9 +36,6 @@ namespace Persistance.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("PostId")
-                        .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -131,9 +130,6 @@ namespace Persistance.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AlbumId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DateOfCreation")
                         .HasColumnType("datetime2");
 
@@ -142,9 +138,6 @@ namespace Persistance.Migrations
 
                     b.Property<byte[]>("Picture")
                         .HasColumnType("varbinary(max)");
-
-                    b.Property<int?>("TagId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -156,10 +149,6 @@ namespace Persistance.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("PostId");
-
-                    b.HasIndex("AlbumId");
-
-                    b.HasIndex("TagId");
 
                     b.HasIndex("UserId1");
 
@@ -217,10 +206,6 @@ namespace Persistance.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TagId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
 
                     b.ToTable("Tag");
                 });
@@ -434,10 +419,6 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("Domain.Entities.Album", b =>
                 {
-                    b.HasOne("Domain.Entities.Post", null)
-                        .WithMany("Albums")
-                        .HasForeignKey("PostId");
-
                     b.HasOne("Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId1");
@@ -490,14 +471,6 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("Domain.Entities.Post", b =>
                 {
-                    b.HasOne("Domain.Entities.Album", null)
-                        .WithMany("Posts")
-                        .HasForeignKey("AlbumId");
-
-                    b.HasOne("Domain.Entities.Tag", null)
-                        .WithMany("Posts")
-                        .HasForeignKey("TagId");
-
                     b.HasOne("Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId1");

@@ -54,6 +54,26 @@ namespace Persistence.DatabaseContext
                 .Entity<Post>()
                 .HasMany(p => p.Tags);
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<AlbumPosts>()
+                .HasKey(ap => new { ap.AlbumId, ap.PostId });
+            modelBuilder.Entity<AlbumPosts>()
+                .HasOne(ap => ap.Album)
+                .WithMany(a => a.AlbumPosts)
+                .HasForeignKey(ap => ap.AlbumId);
+            modelBuilder.Entity<AlbumPosts>()
+                .HasOne(ap => ap.Post)
+                .WithMany(p => p.AlbumPosts)
+                .HasForeignKey(ap => ap.PostId); 
+            modelBuilder.Entity<PostTags>()
+                 .HasKey(pt => new { pt.PostId, pt.TagId});
+            modelBuilder.Entity<PostTags>()
+                .HasOne(pt => pt.Post)
+                .WithMany(p => p.PostTags)
+                .HasForeignKey(pt => pt.PostId);
+            modelBuilder.Entity<PostTags>()
+                .HasOne(pt => pt.Tag)
+                .WithMany(t => t.PostTags)
+                .HasForeignKey(pt => pt.TagId);
         }
 
     }
