@@ -53,6 +53,7 @@ This is a Universitry project done for the subject "_Programming in C#_". It's a
 * Bootstrap
 * .NetCore
 * Blazor
+* Entity Framework
 
 ## Authors
 
