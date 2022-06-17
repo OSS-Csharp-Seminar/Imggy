@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.DatabaseContext;
 
 namespace Persistance.Migrations
 {
     [DbContext(typeof(ImggyDbContext))]
-    partial class ImggyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220501104801_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,7 +23,7 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("Domain.Entities.Album", b =>
                 {
-                    b.Property<int>("AlbumId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -44,54 +46,13 @@ namespace Persistance.Migrations
                     b.Property<string>("UserId1")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("AlbumId");
-
-                    b.HasIndex("UserId1");
-
-                    b.ToTable("Albums");
-                });
-
-            modelBuilder.Entity("Domain.Entities.AlbumPosts", b =>
-                {
-                    b.Property<int>("AlbumId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AlbumId", "PostId");
+                    b.HasKey("Id");
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("AlbumPosts");
-                });
+                    b.HasIndex("UserId1");
 
-            modelBuilder.Entity("Domain.Entities.Blocked", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("BlockerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("BlockerId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("BlockingId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("BlockingId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BlockerId1");
-
-                    b.HasIndex("BlockingId1");
-
-                    b.ToTable("Blocked");
+                    b.ToTable("Album");
                 });
 
             modelBuilder.Entity("Domain.Entities.Comment", b =>
@@ -124,7 +85,7 @@ namespace Persistance.Migrations
 
                     b.HasIndex("UserId1");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comment");
                 });
 
             modelBuilder.Entity("Domain.Entities.CommentLikes", b =>
@@ -152,37 +113,9 @@ namespace Persistance.Migrations
                     b.ToTable("CommentLikes");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Follows", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("FollowedId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FollowedId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("FollowingId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FollowingId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FollowedId1");
-
-                    b.HasIndex("FollowingId1");
-
-                    b.ToTable("Follows");
-                });
-
             modelBuilder.Entity("Domain.Entities.Post", b =>
                 {
-                    b.Property<int>("PostId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -211,7 +144,7 @@ namespace Persistance.Migrations
                     b.Property<string>("UserId1")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("PostId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AlbumId");
 
@@ -219,7 +152,7 @@ namespace Persistance.Migrations
 
                     b.HasIndex("UserId1");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Post");
                 });
 
             modelBuilder.Entity("Domain.Entities.PostLikes", b =>
@@ -247,24 +180,9 @@ namespace Persistance.Migrations
                     b.ToTable("PostLikes");
                 });
 
-            modelBuilder.Entity("Domain.Entities.PostTags", b =>
-                {
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TagId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PostId", "TagId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("PostTags");
-                });
-
             modelBuilder.Entity("Domain.Entities.Tag", b =>
                 {
-                    b.Property<int>("TagId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -272,10 +190,14 @@ namespace Persistance.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("TagId");
+                    b.Property<int?>("PostId")
+                        .HasColumnType("int");
 
-                    b.ToTable("Tags");
+                    b.HasKey("Id");
 
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Tag");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -496,32 +418,6 @@ namespace Persistance.Migrations
                         .HasForeignKey("UserId1");
                 });
 
-            modelBuilder.Entity("Domain.Entities.AlbumPosts", b =>
-                {
-                    b.HasOne("Domain.Entities.Album", "Album")
-                        .WithMany("AlbumPosts")
-                        .HasForeignKey("AlbumId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Post", "Post")
-                        .WithMany("AlbumPosts")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Entities.Blocked", b =>
-                {
-                    b.HasOne("Domain.Entities.User", "Blocker")
-                        .WithMany()
-                        .HasForeignKey("BlockerId1");
-
-                    b.HasOne("Domain.Entities.User", "Blocking")
-                        .WithMany()
-                        .HasForeignKey("BlockingId1");
-                });
-
             modelBuilder.Entity("Domain.Entities.Comment", b =>
                 {
                     b.HasOne("Domain.Entities.Comment", "Parent")
@@ -552,17 +448,6 @@ namespace Persistance.Migrations
                         .HasForeignKey("UserId1");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Follows", b =>
-                {
-                    b.HasOne("Domain.Entities.User", "Followed")
-                        .WithMany()
-                        .HasForeignKey("FollowedId1");
-
-                    b.HasOne("Domain.Entities.User", "Following")
-                        .WithMany()
-                        .HasForeignKey("FollowingId1");
-                });
-
             modelBuilder.Entity("Domain.Entities.Post", b =>
                 {
                     b.HasOne("Domain.Entities.Album", null)
@@ -591,19 +476,11 @@ namespace Persistance.Migrations
                         .HasForeignKey("UserId1");
                 });
 
-            modelBuilder.Entity("Domain.Entities.PostTags", b =>
+            modelBuilder.Entity("Domain.Entities.Tag", b =>
                 {
-                    b.HasOne("Domain.Entities.Post", "Post")
-                        .WithMany("PostTags")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Tag", "Tag")
-                        .WithMany("PostTags")
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Domain.Entities.Post", null)
+                        .WithMany("Tags")
+                        .HasForeignKey("PostId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
