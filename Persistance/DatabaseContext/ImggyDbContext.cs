@@ -16,6 +16,23 @@ namespace Persistence.DatabaseContext
 
         }
 
+        public override int SaveChanges()
+        {
+            var entities = ChangeTracker.Entries().Where(x => x.Entity is BaseEntity && (x.State == EntityState.Added || x.State == EntityState.Modified));
+
+            foreach (var entity in entities)
+            {
+                if (entity.State == EntityState.Added)
+                {
+                    ((BaseEntity)entity.Entity).CreatedAt = DateTime.UtcNow;
+                }
+
+                ((BaseEntity)entity.Entity).UpdatedAt = DateTime.UtcNow;
+            }
+
+            return base.SaveChanges();
+        }
+
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             return await base.SaveChangesAsync(cancellationToken);
@@ -24,6 +41,18 @@ namespace Persistence.DatabaseContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ImggyDbContext).Assembly);
+            modelBuilder
+                .Entity<Album>()
+                .HasMany(a => a.Posts);
+            modelBuilder
+                .Entity<Post>()
+                .HasMany(p => p.Albums);
+            modelBuilder
+                .Entity<Tag>()
+                .HasMany(t => t.Posts);
+            modelBuilder
+                .Entity<Post>()
+                .HasMany(p => p.Tags);
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<AlbumPosts>()
                 .HasKey(ap => new { ap.AlbumId, ap.PostId });
@@ -46,5 +75,6 @@ namespace Persistence.DatabaseContext
                 .WithMany(t => t.PostTags)
                 .HasForeignKey(pt => pt.TagId);
         }
+
     }
 }

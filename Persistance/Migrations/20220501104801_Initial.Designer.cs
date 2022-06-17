@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.DatabaseContext;
 
 namespace Persistance.Migrations
 {
     [DbContext(typeof(ImggyDbContext))]
-    partial class ImggyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220501104801_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,7 +23,7 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("Domain.Entities.Album", b =>
                 {
-                    b.Property<int>("AlbumId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -44,26 +46,13 @@ namespace Persistance.Migrations
                     b.Property<string>("UserId1")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("AlbumId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
 
                     b.HasIndex("UserId1");
 
                     b.ToTable("Album");
-                });
-
-            modelBuilder.Entity("Domain.Entities.AlbumPosts", b =>
-                {
-                    b.Property<int>("AlbumId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AlbumId", "PostId");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("AlbumPosts");
                 });
 
             modelBuilder.Entity("Domain.Entities.Comment", b =>
@@ -126,7 +115,7 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("Domain.Entities.Post", b =>
                 {
-                    b.Property<int>("PostId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -155,7 +144,7 @@ namespace Persistance.Migrations
                     b.Property<string>("UserId1")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("PostId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AlbumId");
 
@@ -191,24 +180,9 @@ namespace Persistance.Migrations
                     b.ToTable("PostLikes");
                 });
 
-            modelBuilder.Entity("Domain.Entities.PostTags", b =>
-                {
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TagId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PostId", "TagId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("PostTags");
-                });
-
             modelBuilder.Entity("Domain.Entities.Tag", b =>
                 {
-                    b.Property<int>("TagId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -216,7 +190,8 @@ namespace Persistance.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("TagId");
+                    b.Property<int?>("PostId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -443,21 +418,6 @@ namespace Persistance.Migrations
                         .HasForeignKey("UserId1");
                 });
 
-            modelBuilder.Entity("Domain.Entities.AlbumPosts", b =>
-                {
-                    b.HasOne("Domain.Entities.Album", "Album")
-                        .WithMany("AlbumPosts")
-                        .HasForeignKey("AlbumId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Post", "Post")
-                        .WithMany("AlbumPosts")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Domain.Entities.Comment", b =>
                 {
                     b.HasOne("Domain.Entities.Comment", "Parent")
@@ -516,19 +476,11 @@ namespace Persistance.Migrations
                         .HasForeignKey("UserId1");
                 });
 
-            modelBuilder.Entity("Domain.Entities.PostTags", b =>
+            modelBuilder.Entity("Domain.Entities.Tag", b =>
                 {
-                    b.HasOne("Domain.Entities.Post", "Post")
-                        .WithMany("PostTags")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Tag", "Tag")
-                        .WithMany("PostTags")
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Domain.Entities.Post", null)
+                        .WithMany("Tags")
+                        .HasForeignKey("PostId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
