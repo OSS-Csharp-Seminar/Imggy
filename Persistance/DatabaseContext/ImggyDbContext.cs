@@ -43,16 +43,16 @@ namespace Persistence.DatabaseContext
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ImggyDbContext).Assembly);
             modelBuilder
                 .Entity<Album>()
-                .HasMany(a => a.Posts);
+                .HasMany(a => a.AlbumPosts);
             modelBuilder
                 .Entity<Post>()
-                .HasMany(p => p.Albums);
+                .HasMany(p => p.AlbumPosts);
             modelBuilder
                 .Entity<Tag>()
-                .HasMany(t => t.Posts);
+                .HasMany(t => t.PostTags);
             modelBuilder
                 .Entity<Post>()
-                .HasMany(p => p.Tags);
+                .HasMany(p => p.PostTags);
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<AlbumPosts>()
                 .HasKey(ap => new { ap.AlbumId, ap.PostId });
