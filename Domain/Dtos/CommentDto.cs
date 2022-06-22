@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Domain.Dtos
 {
-    public class CommentDto
+    internal class CommentDto
     {
         public int UserId { get; set; }
         public int PostId { get; set; }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Domain.Dtos
 {
-    public class UserDto
+    internal class UserDto
     {
         public string UserName { get; set; }
         public string Password { get; set; }

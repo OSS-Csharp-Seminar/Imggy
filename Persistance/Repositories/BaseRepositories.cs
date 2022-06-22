@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Persistance.Repositories
 {
@@ -27,10 +28,28 @@ namespace Persistance.Repositories
         {
             return this.DbSet.Find(id);
         }
+        public async Task<T> SingleAsync(int id)
+        {
+            return await this.DbSet.FindAsync(id);
+        }
 
         public void Persist(T entity)
         {
             DbSet.Add(entity);
+        }
+        public async Task PersistAsync(T entity)
+        {
+            await DbSet.AddAsync(entity);
+        }
+
+        public void Update(T entity)
+        {
+            DbSet.Update(entity);
+        }
+
+        public void Remove(T entity)
+        { 
+            DbSet.Remove(entity);
         }
 
         public void PersistRange(IEnumerable<T> entities)
@@ -43,9 +62,9 @@ namespace Persistance.Repositories
             Db.SaveChanges();
         }
 
-        public void FlushAsync()
+        public async Task FlushAsync()
         {
-            Db.SaveChangesAsync();
+            await Db.SaveChangesAsync();
         }
     }
 }

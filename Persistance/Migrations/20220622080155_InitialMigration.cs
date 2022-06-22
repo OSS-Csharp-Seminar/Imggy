@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Persistance.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -50,7 +50,7 @@ namespace Persistance.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tag",
+                name: "Tags",
                 columns: table => new
                 {
                     TagId = table.Column<int>(nullable: false)
@@ -59,7 +59,7 @@ namespace Persistance.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tag", x => x.TagId);
+                    table.PrimaryKey("PK_Tags", x => x.TagId);
                 });
 
             migrationBuilder.CreateTable(
@@ -84,7 +84,7 @@ namespace Persistance.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Album",
+                name: "Albums",
                 columns: table => new
                 {
                     AlbumId = table.Column<int>(nullable: false)
@@ -97,9 +97,9 @@ namespace Persistance.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Album", x => x.AlbumId);
+                    table.PrimaryKey("PK_Albums", x => x.AlbumId);
                     table.ForeignKey(
-                        name: "FK_Album_AspNetUsers_UserId1",
+                        name: "FK_Albums_AspNetUsers_UserId1",
                         column: x => x.UserId1,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -192,7 +192,63 @@ namespace Persistance.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Post",
+                name: "Blocked",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BlockerId = table.Column<int>(nullable: false),
+                    BlockerId1 = table.Column<string>(nullable: true),
+                    BlockingId = table.Column<int>(nullable: false),
+                    BlockingId1 = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Blocked", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Blocked_AspNetUsers_BlockerId1",
+                        column: x => x.BlockerId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Blocked_AspNetUsers_BlockingId1",
+                        column: x => x.BlockingId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Follows",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FollowedId = table.Column<int>(nullable: false),
+                    FollowedId1 = table.Column<string>(nullable: true),
+                    FollowingId = table.Column<int>(nullable: false),
+                    FollowingId1 = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Follows", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Follows_AspNetUsers_FollowedId1",
+                        column: x => x.FollowedId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Follows_AspNetUsers_FollowingId1",
+                        column: x => x.FollowingId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Posts",
                 columns: table => new
                 {
                     PostId = table.Column<int>(nullable: false)
@@ -201,14 +257,14 @@ namespace Persistance.Migrations
                     UserId1 = table.Column<string>(nullable: true),
                     Title = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    Picture = table.Column<byte[]>(nullable: true),
+                    Picture = table.Column<string>(nullable: true),
                     DateOfCreation = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Post", x => x.PostId);
+                    table.PrimaryKey("PK_Posts", x => x.PostId);
                     table.ForeignKey(
-                        name: "FK_Post_AspNetUsers_UserId1",
+                        name: "FK_Posts_AspNetUsers_UserId1",
                         column: x => x.UserId1,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -226,21 +282,21 @@ namespace Persistance.Migrations
                 {
                     table.PrimaryKey("PK_AlbumPosts", x => new { x.AlbumId, x.PostId });
                     table.ForeignKey(
-                        name: "FK_AlbumPosts_Album_AlbumId",
+                        name: "FK_AlbumPosts_Albums_AlbumId",
                         column: x => x.AlbumId,
-                        principalTable: "Album",
+                        principalTable: "Albums",
                         principalColumn: "AlbumId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AlbumPosts_Post_PostId",
+                        name: "FK_AlbumPosts_Posts_PostId",
                         column: x => x.PostId,
-                        principalTable: "Post",
+                        principalTable: "Posts",
                         principalColumn: "PostId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Comment",
+                name: "Comments",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -249,25 +305,26 @@ namespace Persistance.Migrations
                     UserId = table.Column<int>(nullable: false),
                     UserId1 = table.Column<string>(nullable: true),
                     PostId = table.Column<int>(nullable: false),
+                    Body = table.Column<string>(nullable: true),
                     DateOfCreation = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comment", x => x.Id);
+                    table.PrimaryKey("PK_Comments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comment_Comment_ParentId",
+                        name: "FK_Comments_Comments_ParentId",
                         column: x => x.ParentId,
-                        principalTable: "Comment",
+                        principalTable: "Comments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Comment_Post_PostId",
+                        name: "FK_Comments_Posts_PostId",
                         column: x => x.PostId,
-                        principalTable: "Post",
+                        principalTable: "Posts",
                         principalColumn: "PostId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Comment_AspNetUsers_UserId1",
+                        name: "FK_Comments_AspNetUsers_UserId1",
                         column: x => x.UserId1,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -288,9 +345,9 @@ namespace Persistance.Migrations
                 {
                     table.PrimaryKey("PK_PostLikes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PostLikes_Post_PostId",
+                        name: "FK_PostLikes_Posts_PostId",
                         column: x => x.PostId,
-                        principalTable: "Post",
+                        principalTable: "Posts",
                         principalColumn: "PostId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -312,15 +369,15 @@ namespace Persistance.Migrations
                 {
                     table.PrimaryKey("PK_PostTags", x => new { x.PostId, x.TagId });
                     table.ForeignKey(
-                        name: "FK_PostTags_Post_PostId",
+                        name: "FK_PostTags_Posts_PostId",
                         column: x => x.PostId,
-                        principalTable: "Post",
+                        principalTable: "Posts",
                         principalColumn: "PostId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PostTags_Tag_TagId",
+                        name: "FK_PostTags_Tags_TagId",
                         column: x => x.TagId,
-                        principalTable: "Tag",
+                        principalTable: "Tags",
                         principalColumn: "TagId",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -339,9 +396,9 @@ namespace Persistance.Migrations
                 {
                     table.PrimaryKey("PK_CommentLikes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CommentLikes_Comment_CommentId",
+                        name: "FK_CommentLikes_Comments_CommentId",
                         column: x => x.CommentId,
-                        principalTable: "Comment",
+                        principalTable: "Comments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -353,14 +410,14 @@ namespace Persistance.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Album_UserId1",
-                table: "Album",
-                column: "UserId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_AlbumPosts_PostId",
                 table: "AlbumPosts",
                 column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Albums_UserId1",
+                table: "Albums",
+                column: "UserId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -402,19 +459,14 @@ namespace Persistance.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comment_ParentId",
-                table: "Comment",
-                column: "ParentId");
+                name: "IX_Blocked_BlockerId1",
+                table: "Blocked",
+                column: "BlockerId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comment_PostId",
-                table: "Comment",
-                column: "PostId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Comment_UserId1",
-                table: "Comment",
-                column: "UserId1");
+                name: "IX_Blocked_BlockingId1",
+                table: "Blocked",
+                column: "BlockingId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CommentLikes_CommentId",
@@ -427,9 +479,29 @@ namespace Persistance.Migrations
                 column: "UserId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Post_UserId1",
-                table: "Post",
+                name: "IX_Comments_ParentId",
+                table: "Comments",
+                column: "ParentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_PostId",
+                table: "Comments",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_UserId1",
+                table: "Comments",
                 column: "UserId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Follows_FollowedId1",
+                table: "Follows",
+                column: "FollowedId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Follows_FollowingId1",
+                table: "Follows",
+                column: "FollowingId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PostLikes_PostId",
@@ -439,6 +511,11 @@ namespace Persistance.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_PostLikes_UserId1",
                 table: "PostLikes",
+                column: "UserId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_UserId1",
+                table: "Posts",
                 column: "UserId1");
 
             migrationBuilder.CreateIndex(
@@ -468,7 +545,13 @@ namespace Persistance.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Blocked");
+
+            migrationBuilder.DropTable(
                 name: "CommentLikes");
+
+            migrationBuilder.DropTable(
+                name: "Follows");
 
             migrationBuilder.DropTable(
                 name: "PostLikes");
@@ -477,19 +560,19 @@ namespace Persistance.Migrations
                 name: "PostTags");
 
             migrationBuilder.DropTable(
-                name: "Album");
+                name: "Albums");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Comment");
+                name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "Tag");
+                name: "Tags");
 
             migrationBuilder.DropTable(
-                name: "Post");
+                name: "Posts");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

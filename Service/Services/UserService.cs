@@ -1,65 +1,47 @@
-﻿using Domain.Dtos;
-using Domain.Entities;
-using Persistance.Repositories;
+﻿using Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Service.Services
 {
     public class UserService
     {
-        private readonly UserRepository _userRepository;
-        public UserService(UserRepository userRepository)
+        //PROMINI DA BUDE KO KONTROLERI
+        private readonly HttpClient _httpClient;
+        private readonly string BaseApiUrl = "https://localhost:44377/api/Imggy";
+        public UserService(HttpClient httpClient)
         {
-            _userRepository = userRepository;
+            _httpClient = httpClient;
         }
-
-        protected bool ValidateUser(UserDto userDto)
+        public async Task<List<User>> GetAllUsers()
         {
-            if (userDto == null) { return false; }
-            if(string.IsNullOrEmpty(userDto.UserName)) { return false; }
-            if(string.IsNullOrEmpty(userDto.Password)) { return false; }
-            if(string.IsNullOrEmpty(userDto.Email)) { return false; }
-            if(string.IsNullOrEmpty(userDto.Role)) { return false; }
-            return true;
+            return await _httpClient.GetFromJsonAsync<List<User>>(BaseApiUrl);
         }
-
-        public bool CreateUser(UserDto userDto)
+        public async Task AddUserAsync(User user)
         {
-            User user = new User(); 
-            if (!ValidateUser(userDto)) { return false; }
-            try
-            {
-                user.UserName = userDto.UserName;
-                user.PasswordHash = userDto.Password;
-                user.Email = userDto.Email;
-                user.DateOfCreation = DateTime.Now;
-                _userRepository.Persist(user);
-            }
-            catch
-            {
-                return false;
-            }
-            return true;
+            var request = new HttpRequestMessage(HttpMethod.Post, BaseApiUrl);
+            request.Content = new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json");
+            await _httpClient.SendAsync(request);
         }
-
-        public bool UpdateUser(UserDto userDto)
+        public async Task<User> GetUserAsync(int userId)
         {
-            User user = new User();
-            if (!ValidateUser(userDto)) { return false; }
-            try
-            {
-                user.UserName = userDto.UserName;
-                user.PasswordHash = userDto.Password;
-                user.Email = userDto.Email;
-                _userRepository.Update(user);
-            }
-            catch
-            {
-                return false;
-            }
-            return true;
+            return await _httpClient.GetFromJsonAsync<User>($"{BaseApiUrl}/{userId}");
+        }
+        public async Task UpdateUserAsync(User user)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Put, BaseApiUrl);
+            request.Content = new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json");
+            await _httpClient.SendAsync(request);
+        }
+        public async Task DeleteUserAsync(int userId)
+        {
+            var httpRequest = new HttpRequestMessage(HttpMethod.Delete, $"{BaseApiUrl}/{userId}");
+            await _httpClient.SendAsync(httpRequest);
         }
     }
 }

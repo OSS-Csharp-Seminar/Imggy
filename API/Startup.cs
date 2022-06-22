@@ -77,7 +77,6 @@ namespace API
             this.ApplicationContainer = builder.Build();
 
             new AutofacServiceProvider(this.ApplicationContainer);
-
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

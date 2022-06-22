@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Domain.Dtos
 {
-    public class AlbumDto
+    internal class AlbumDto
     {
         public string Name { get; set; }
         public bool IsPublic { get; set; }

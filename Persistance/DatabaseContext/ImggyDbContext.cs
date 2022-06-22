@@ -37,22 +37,20 @@ namespace Persistence.DatabaseContext
         {
             return await base.SaveChangesAsync(cancellationToken);
         }
+        DbSet<Album> Albums { get; set; }
+        DbSet<AlbumPosts> AlbumPosts { get; set; }
+        DbSet<Post> Posts { get; set; }
+        DbSet<Tag> Tags { get; set; }
+        DbSet<PostTags> PostTags { get; set; }
+        DbSet<PostLikes> PostLikes { get; set; }
+        DbSet<Comment> Comments { get; set; }
+        DbSet<CommentLikes> CommentLikes { get; set; }
+        DbSet<Blocked> Blocked { get; set; }
+        DbSet<Follows> Follows { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ImggyDbContext).Assembly);
-            modelBuilder
-                .Entity<Album>()
-                .HasMany(a => a.AlbumPosts);
-            modelBuilder
-                .Entity<Post>()
-                .HasMany(p => p.AlbumPosts);
-            modelBuilder
-                .Entity<Tag>()
-                .HasMany(t => t.PostTags);
-            modelBuilder
-                .Entity<Post>()
-                .HasMany(p => p.PostTags);
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<AlbumPosts>()
                 .HasKey(ap => new { ap.AlbumId, ap.PostId });
@@ -63,9 +61,9 @@ namespace Persistence.DatabaseContext
             modelBuilder.Entity<AlbumPosts>()
                 .HasOne(ap => ap.Post)
                 .WithMany(p => p.AlbumPosts)
-                .HasForeignKey(ap => ap.PostId); 
+                .HasForeignKey(ap => ap.PostId);
             modelBuilder.Entity<PostTags>()
-                 .HasKey(pt => new { pt.PostId, pt.TagId});
+                 .HasKey(pt => new { pt.PostId, pt.TagId });
             modelBuilder.Entity<PostTags>()
                 .HasOne(pt => pt.Post)
                 .WithMany(p => p.PostTags)

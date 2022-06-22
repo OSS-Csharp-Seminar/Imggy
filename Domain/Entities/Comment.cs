@@ -15,6 +15,7 @@ namespace Domain.Entities
         public User User { get; set; }
         public int PostId { get; set; }
         public Post Post { get; set; }
+        public string Body { get; set; }
         public DateTime DateOfCreation { get; set; }
         public List<CommentLikes> CommentLikes { get; set; }
     }

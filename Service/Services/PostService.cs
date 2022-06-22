@@ -1,60 +1,46 @@
-﻿using Domain.Dtos;
-using Domain.Entities;
-using Persistance.Repositories;
+﻿using Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Service.Services
 {
     public class PostService
     {
-        private readonly PostRepository _postRepository;
-        public PostService(PostRepository postRepository)
+        private readonly HttpClient _httpClient;
+        private readonly string BaseApiUrl = "https://localhost:44377/api/Imggy";
+        public PostService(HttpClient httpClient)
         {
-            _postRepository = postRepository;
+            _httpClient = httpClient;
         }
-        protected bool ValidatePost(PostDto postDto)
+        public async Task<List<Post>> GetAllPosts()
         {
-            if (postDto == null) { return false; }
-            if(string.IsNullOrEmpty(postDto.Description)) { return false; }
-            if(string.IsNullOrEmpty(postDto.Picture)) { return false; }
-            return true;
+            return await _httpClient.GetFromJsonAsync<List<Post>>(BaseApiUrl);
         }
-
-        public bool CreatePost(PostDto postDto)
+        public async Task AddPostAsync(Post post)
         {
-            Post post = new Post();
-            if(!ValidatePost(postDto)) { return false; }
-            try
-            {
-                post.Description = postDto.Description;
-                post.Picture = postDto.Picture;
-                _postRepository.Persist(post);
-            }
-            catch
-            {
-                return false;
-            }
-            return true;
+            var request = new HttpRequestMessage(HttpMethod.Post, BaseApiUrl);
+            request.Content = new StringContent(JsonSerializer.Serialize(post), Encoding.UTF8, "application/json");
+            await _httpClient.SendAsync(request);
         }
-
-        public bool UpdatePost(PostDto postDto)
+        public async Task<Post> GetPostAsync(int postId)
         {
-
-            Post post = new Post();
-            if (!ValidatePost(postDto)) { return false; }
-            try
-            {
-                post.Description = postDto.Description;
-                post.Picture = postDto.Picture;
-                _postRepository.Update(post);
-            }
-            catch
-            {
-                return false;
-            }
-            return true;
+            return await _httpClient.GetFromJsonAsync<Post>($"{BaseApiUrl}/{postId}");
+        }
+        public async Task UpdatePostAsync(Post post)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Put, BaseApiUrl);
+            request.Content = new StringContent(JsonSerializer.Serialize(post), Encoding.UTF8, "application/json");
+            await _httpClient.SendAsync(request);
+        }
+        public async Task DeletePostAsync(int postId)
+        {
+            var httpRequest = new HttpRequestMessage(HttpMethod.Delete, $"{BaseApiUrl}/{postId}");
+            await _httpClient.SendAsync(httpRequest);
         }
     }
 }
