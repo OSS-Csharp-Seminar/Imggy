@@ -11,46 +11,47 @@ namespace API.Controllers
     [ApiController]
     public class BaseController<T> : ControllerBase where T : class
     {
-        protected BaseRepository<T> BaseRepository { get; set; }
+        protected BaseRepository<T> Repository { get; set; }
         public BaseController(BaseRepository<T> Repository)
         {
-            BaseRepository = Repository;
+            this.Repository = Repository;
         }
 
         [HttpGet]
-        public virtual async Task<IEnumerable<T>> GetAllAsync()
+        public virtual IActionResult GetAll()
         {
-            return await BaseRepository.Query().ToListAsync();
+            return Ok(Repository.Query().ToList());
         }
 
         [HttpGet("{id}")]
-        public virtual async Task<T> GetAsync(int id)
+        public virtual IActionResult Get(int id)
         {
-            return await BaseRepository.SingleAsync(id);
+            return Ok(Repository.Single(id));
         }
 
         [HttpDelete("{id}")]
-        public virtual async Task DeleteAsync(int id)
+        public virtual IActionResult Delete(int id)
         {
-            var entity = await BaseRepository.SingleAsync(id);
-            BaseRepository.Remove(entity);
-            await BaseRepository.FlushAsync();
+            var entity = Repository.Single(id);
+            Repository.Remove(entity);
+            Repository.Flush();
+            return Ok("Deleted");
         }
 
         [HttpPost]
-        public virtual async Task<T> CreateAsync(T entity)
+        public virtual IActionResult Create(T entity)
         {
-            await BaseRepository.PersistAsync(entity);
-            await BaseRepository.FlushAsync();
-            return entity;
+            Repository.Persist(entity);
+            Repository.Flush();
+            return Ok(entity);
         }
 
         [HttpPost]
-        public virtual async Task<T> UpdateAsync(T entity)
+        public virtual IActionResult UpdateAsync(T entity)
         {
-            BaseRepository.Update(entity);
-            await BaseRepository.FlushAsync();
-            return entity;
+            Repository.Update(entity);
+            Repository.Flush();
+            return Ok(entity);
         }
     }
 }
