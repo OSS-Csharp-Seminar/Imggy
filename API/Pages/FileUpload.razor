@@ -1,0 +1,46 @@
+﻿@page "/fileuploader"
+@using System.IO
+@inject HttpClient httpClient
+
+<h3>Upload File</h3>
+<form @onsubmit="@UploadFile" enctype="multipart/form-data">
+    <InputFile OnChange="@SelectFile"/>
+    <input type="submit" value="Upload"> 
+    <img src="@imgUrl">
+</form>
+
+@code {
+    private StreamContent fileContent;
+    private string fileName;
+    private string imgUrl;
+    private string imageType;
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    private async Task UploadFile()
+    {
+      using var content = new MultipartFormDataContent();
+      content.Add
+      (content: fileContent,name: "\"file\"",fileName:fileName);
+      var response = 
+                await httpClient.PostAsync
+                ("http://localhost:5000/api/FileUpload/file/upload", 
+                content);
+    }
+
+    private async Task SelectFile(InputFileChangeEventArgs  e)
+    {
+       long maxFileSize = 1024 * 1024 * 10;
+       fileContent = new StreamContent(e.File.OpenReadStream(maxFileSize));
+       fileName = e.File.Name;
+
+       var fileSize = new byte[e.File.Size];
+       await e.File.OpenReadStream().ReadAsync(fileSize);
+       imageType = e.File.ContentType;
+       imgUrl = $"data:{imageType};base64,{Convert.ToBase64String(fileSize)}";
+
+       this.StateHasChanged();
+    }   
+}

@@ -13,7 +13,7 @@ namespace Domain.Entities
         public User User { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public byte[] Picture { get; set; }
+        public string PicturePath { get; set; }
         public DateTime DateOfCreation { get; set; }
         public ICollection<AlbumPosts> AlbumPosts { get; set; }
         public List<PostLikes> PostLikes { get; set; }
